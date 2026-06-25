@@ -4,7 +4,6 @@ import re
 def count_difficulties():
     easy, medium, hard = 0, 0, 0
     for root, dirs, files in os.walk("."):
-        # Ignore hidden folders like .git and .github
         if ".github" in root or ".git" in root:
             continue
         if "README.md" in files and root != ".":
@@ -38,22 +37,22 @@ _Last Updated automatically via GitHub Actions_
 
     readme_path = "README.md"
     
-    # Read the existing content safely
     if os.path.exists(readme_path):
         with open(readme_path, "r", encoding="utf-8") as f:
-            readme_content = f.read()
+            content = f.read()
     else:
-        readme_content = ""
+        content = ""
 
-    # Replace ONLY the stats section block
-    pattern = r".*?"
-    if re.search(pattern, readme_content, re.DOTALL):
-        new_content = re.sub(pattern, stats_markdown, readme_content, flags=re.DOTALL)
-    else:
-        # If the block isn't found, just append it neatly
-        new_content = readme_content.strip() + "\n\n" + stats_markdown
+    # 🔥 THE SELF-HEALING FIX: Completely wipe out ALL existing stats blocks (duplicates included)
+    content = re.sub(r".*?", "", content, flags=re.DOTALL)
+    
+    # Also clear out any loose tables that lost their comment tags
+    content = re.sub(r"### 📊 LeetCode Progress Dashboard.*?(?=\n\n|\Z)", "", content, flags=re.DOTALL)
 
-    # Write back using standard Linux line breaks to stop Git from tripping over CRLF
+    # Append exactly ONE clean block at the very end of the file
+    new_content = content.strip() + "\n\n" + stats_markdown
+    new_content = new_content.strip()
+
     with open(readme_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(new_content)
 
