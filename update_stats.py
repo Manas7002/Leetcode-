@@ -3,16 +3,15 @@ import re
 
 def count_difficulties():
     easy, medium, hard = 0, 0, 0
-    
-    # Iterate through all directories in the repo
     for root, dirs, files in os.walk("."):
-        # Look specifically inside the LeetHub problem folders for their README.md
+        # Ignore hidden folders like .git and .github
+        if ".github" in root or ".git" in root:
+            continue
         if "README.md" in files and root != ".":
             readme_path = os.path.join(root, "README.md")
             try:
                 with open(readme_path, "r", encoding="utf-8") as f:
                     content = f.read()
-                    # LeetHub adds the difficulty directly in the parsed markdown text
                     if re.search(r"\bEasy\b", content, re.IGNORECASE):
                         easy += 1
                     elif re.search(r"\bMedium\b", content, re.IGNORECASE):
@@ -21,13 +20,11 @@ def count_difficulties():
                         hard += 1
             except Exception:
                 pass
-                
     return easy, medium, hard
 
 def update_readme(easy, medium, hard):
     total = easy + medium + hard
-    stats_markdown = f"""
-### 📊 LeetCode Progress Dashboard
+    stats_markdown = f"""### 📊 LeetCode Progress Dashboard
 
 | Difficulty | Solved Count |
 | :--- | :--- |
@@ -36,23 +33,30 @@ def update_readme(easy, medium, hard):
 | 🔴 **Hard** | {hard} |
 | 🔢 **Total** | **{total}** |
 
-_Last Updated automatically via update_stats.py_
+_Last Updated automatically via GitHub Actions_
 """
-    
-    with open("README.md", "r", encoding="utf-8") as f:
-        readme_content = f.read()
 
-    # Replace old stats block if it exists, otherwise append it
+    readme_path = "README.md"
+    
+    # Read the existing content safely
+    if os.path.exists(readme_path):
+        with open(readme_path, "r", encoding="utf-8") as f:
+            readme_content = f.read()
+    else:
+        readme_content = ""
+
+    # Replace ONLY the stats section block
     pattern = r".*?"
     if re.search(pattern, readme_content, re.DOTALL):
-        new_content = re.sub(pattern, stats_markdown.strip(), readme_content, flags=re.DOTALL)
+        new_content = re.sub(pattern, stats_markdown, readme_content, flags=re.DOTALL)
     else:
-        new_content = readme_content + "\n" + stats_markdown
+        # If the block isn't found, just append it neatly
+        new_content = readme_content.strip() + "\n\n" + stats_markdown
 
-    with open("README.md", "w", encoding="utf-8") as f:
+    # Write back using standard Linux line breaks to stop Git from tripping over CRLF
+    with open(readme_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(new_content)
 
 if __name__ == "__main__":
     e, m, h = count_difficulties()
     update_readme(e, m, h)
-    print(f"Stats updated! Easy: {e}, Medium: {m}, Hard: {h}")
