@@ -3,8 +3,8 @@
 | Difficulty | Solved Count |
 | :--- | :--- |
 | 🟢 **Easy** | 3 |
-| 🟡 **Medium** | 8 |
+| 🟡 **Medium** | 9 |
 | 🔴 **Hard** | 3 |
-| 🔢 **Total** | **14** |
+| 🔢 **Total** | **15** |
 
 _Last Updated automatically via GitHub Actions_
