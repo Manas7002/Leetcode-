@@ -4,7 +4,7 @@ class Solution {
 
         for (int i = 0; i < s.length(); i++) {
 
-            // ---- ODD LENGTH CHECK (single character center) ----
+           
             int left = i;
             int right = i;
 
