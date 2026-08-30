@@ -3,19 +3,8 @@
 | Difficulty | Solved Count |
 | :--- | :--- |
 | 🟢 **Easy** | 12 |
-| 🟡 **Medium** | 16 |
+| 🟡 **Medium** | 17 |
 | 🔴 **Hard** | 4 |
-| 🔢 **Total** | **32** |
+| 🔢 **Total** | **33** |
 
 _Last Updated automatically via GitHub Actions_
-<!---LeetCode Topics Start-->
-# LeetCode Topics
-## Array
-|  |
-| ------- |
-| [0033-search-in-rotated-sorted-array](https://github.com/Manas7002/Leetcode-/tree/master/0033-search-in-rotated-sorted-array) |
-## Binary Search
-|  |
-| ------- |
-| [0033-search-in-rotated-sorted-array](https://github.com/Manas7002/Leetcode-/tree/master/0033-search-in-rotated-sorted-array) |
-<!---LeetCode Topics End-->
